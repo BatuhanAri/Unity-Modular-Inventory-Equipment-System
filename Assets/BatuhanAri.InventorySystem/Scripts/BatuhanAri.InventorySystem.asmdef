@@ -2,13 +2,13 @@
     "name": "BatuhanAri.InventorySystem",
     "rootNamespace": "BatuhanAri.InventorySystem",
     "references": [
-        "Unity.TextMeshPro",
-        "Unity.ugui"
+        "Unity.ugui",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
