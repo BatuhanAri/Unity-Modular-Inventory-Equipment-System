@@ -1,0 +1,16 @@
+using UnityEngine;
+
+namespace ModularInventory.Core
+{
+    /// <summary>
+    /// Defines the visual and conceptual rarity of an item.
+    /// </summary>
+    public enum ItemRarity
+    {
+        Common = 0,
+        Uncommon = 1,
+        Rare = 2,
+        Epic = 3,
+        Legendary = 4
+    }
+}
