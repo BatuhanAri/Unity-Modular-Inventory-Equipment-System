@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine.UI;
 using System.IO;
+using BatuhanAri.InventorySystem.Inventory;
+using BatuhanAri.InventorySystem.Equipment;
+using BatuhanAri.InventorySystem.UI;
 
 namespace BatuhanAri.InventorySystem.Editor
 {
@@ -174,7 +178,7 @@ namespace BatuhanAri.InventorySystem.Editor
                 uiInstance.name = "UI_Canvas";
 
                 // Try to connect InventoryManager to UI
-                var inventoryManager = FindObjectOfType<InventoryManager>();
+                var inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
                 if (inventoryManager != null)
                 {
                     var uiWindow = uiInstance.GetComponentInChildren<UIInventoryWindow>();

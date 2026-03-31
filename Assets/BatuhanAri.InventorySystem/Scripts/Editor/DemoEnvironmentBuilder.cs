@@ -31,7 +31,7 @@ namespace BatuhanAri.InventorySystem.Editor
             invManager.InitializeInventory(20);
 
             // 2. Create Event System if missing
-            if (FindObjectOfType<EventSystem>() == null)
+            if (FindFirstObjectByType<EventSystem>() == null)
             {
                 GameObject esGo = new GameObject("EventSystem");
                 esGo.AddComponent<EventSystem>();

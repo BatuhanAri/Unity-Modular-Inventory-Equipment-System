@@ -1,6 +1,12 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine.UI;
+using BatuhanAri.InventorySystem.Inventory;
+using BatuhanAri.InventorySystem.Equipment;
+using BatuhanAri.InventorySystem.UI;
+using BatuhanAri.InventorySystem.Data;
+using BatuhanAri.InventorySystem.Core;
 
 namespace BatuhanAri.InventorySystem.Editor
 {
@@ -36,7 +42,7 @@ namespace BatuhanAri.InventorySystem.Editor
             // Object.DontDestroyOnLoad(systemGO);
 
             // Create UI Canvas if it doesn't exist
-            if (FindObjectOfType<Canvas>() == null)
+            if (Object.FindFirstObjectByType<Canvas>() == null)
             {
                 SetupInventoryUI(inventoryManager);
             }
@@ -83,7 +89,7 @@ namespace BatuhanAri.InventorySystem.Editor
         [MenuItem(MenuRoot + "Create Inventory UI Canvas")]
         public static void CreateInventoryUICanvas()
         {
-            var inventoryManager = FindObjectOfType<InventoryManager>();
+            var inventoryManager = Object.FindFirstObjectByType<InventoryManager>();
 
             if (inventoryManager == null)
             {
@@ -128,7 +134,8 @@ namespace BatuhanAri.InventorySystem.Editor
             AssetDatabase.SaveAssets();
 
             Debug.Log($"✅ Sample ItemData created at: {path}");
-            EditorGUIUtility.PingAsset(itemData);
+            Selection.activeObject = itemData;
+            EditorGUIUtility.PingObject(Selection.activeEntityId);
         }
 
         /// <summary>

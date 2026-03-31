@@ -18,7 +18,7 @@ namespace BatuhanAri.InventorySystem.Demo
         private void Start()
         {
             // Ideally inject this, but FindObject is okay for Demo purposes
-            playerInventory = FindObjectOfType<InventoryManager>();
+            playerInventory = FindFirstObjectByType<InventoryManager>();
         }
 
         private void OnMouseDown() // Simple click-to-pickup for demo
