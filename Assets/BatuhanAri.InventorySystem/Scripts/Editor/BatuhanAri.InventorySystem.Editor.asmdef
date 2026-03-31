@@ -2,7 +2,8 @@
     "name": "BatuhanAri.InventorySystem.Editor",
     "rootNamespace": "BatuhanAri.InventorySystem.Editor",
     "references": [
-        "BatuhanAri.InventorySystem"
+        "BatuhanAri.InventorySystem",
+        "Unity.ugui"
     ],
     "includePlatforms": [
         "Editor"
