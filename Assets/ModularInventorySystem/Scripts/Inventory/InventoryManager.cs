@@ -163,9 +163,68 @@ namespace ModularInventory.Inventory
             var item1 = slots[slotIndex1].Item;
             var item2 = slots[slotIndex2].Item;
 
+            // If same item type and doing a swap on non-empty, maybe merge? (Optional logic here, but standard is swap)
+            if (item1 != null && item2 != null && item1.Data == item2.Data)
+            {
+                // Attempt merge
+                int remaining = item2.AddToStack(item1.CurrentStack);
+                if (remaining == 0)
+                {
+                    slots[slotIndex1].ClearSlot();
+                }
+                else
+                {
+                    item1.RemoveFromStack(item1.CurrentStack - remaining);
+                }
+                slots[slotIndex1].RefreshSlot();
+                slots[slotIndex2].RefreshSlot();
+                OnInventoryUpdated?.Invoke();
+                return true;
+            }
+
+            // Normal Swap
             slots[slotIndex1].SetItem(item2);
             slots[slotIndex2].SetItem(item1);
 
+            OnInventoryUpdated?.Invoke();
+            return true;
+        }
+
+        public bool SplitSlot(int sourceSlotIndex, int targetSlotIndex, int amount)
+        {
+            if (sourceSlotIndex < 0 || sourceSlotIndex >= slots.Count || targetSlotIndex < 0 || targetSlotIndex >= slots.Count)
+                return false;
+
+            var sourceSlot = slots[sourceSlotIndex];
+            var targetSlot = slots[targetSlotIndex];
+
+            if (sourceSlot.IsEmpty || sourceSlot.Item.CurrentStack <= amount) return false;
+
+            InventoryItem targetOriginalItem = targetSlot.Item;
+
+            // Target must be empty or same item to receive a split
+            if (!targetSlot.IsEmpty && targetOriginalItem.Data != sourceSlot.Item.Data) return false;
+
+            sourceSlot.Item.RemoveFromStack(amount);
+
+            if (targetSlot.IsEmpty)
+            {
+                InventoryItem newSplitItem = sourceSlot.Item.Clone(amount);
+                targetSlot.SetItem(newSplitItem);
+            }
+            else
+            {
+                // Merge into target
+                int leftover = targetOriginalItem.AddToStack(amount);
+                if (leftover > 0)
+                {
+                    // If target was near full, return the remainder to source
+                    sourceSlot.Item.AddToStack(leftover);
+                }
+            }
+
+            sourceSlot.RefreshSlot();
+            targetSlot.RefreshSlot();
             OnInventoryUpdated?.Invoke();
             return true;
         }

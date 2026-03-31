@@ -60,8 +60,25 @@ namespace ModularInventory.UI
         {
             if (droppedSlot is UIInventorySlot otherInvSlot)
             {
-                // Swap in Inventory
-                inventoryWindow.InventoryManager.SwapSlots(otherInvSlot.dataSlot.SlotIndex, this.dataSlot.SlotIndex);
+                if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+                {
+                    // Half-split logic
+                    if (otherInvSlot.ItemRef != null && otherInvSlot.ItemRef.CurrentStack > 1)
+                    {
+                        int halfAmount = otherInvSlot.ItemRef.CurrentStack / 2;
+                        inventoryWindow.InventoryManager.SplitSlot(otherInvSlot.dataSlot.SlotIndex, this.dataSlot.SlotIndex, halfAmount);
+                    }
+                    else
+                    {
+                        // Fallback to swap if item is 1 stack
+                        inventoryWindow.InventoryManager.SwapSlots(otherInvSlot.dataSlot.SlotIndex, this.dataSlot.SlotIndex);
+                    }
+                }
+                else
+                {
+                    // Normal Swap (or Merge if they are same item type, which is handled in SwapSlots now)
+                    inventoryWindow.InventoryManager.SwapSlots(otherInvSlot.dataSlot.SlotIndex, this.dataSlot.SlotIndex);
+                }
             }
             else if (droppedSlot is UIEquipmentSlot equipSlot)
             {

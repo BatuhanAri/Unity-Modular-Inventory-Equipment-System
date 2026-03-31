@@ -28,19 +28,25 @@ namespace ModularInventory.SaveSystem
         [Header("Settings")]
         [SerializeField] private string saveKey = "PlayerInventorySave";
         
-        // Caching items for loading based on ID
+        private ISaveProvider saveProvider;
         private Dictionary<string, ItemData> itemDatabase;
 
         private void Awake()
         {
-            // Simple way to load all items (Place ItemData ScriptableObjects in Resources/Items)
+            // Try to find a Save Provider attached to the same object or globally
+            saveProvider = GetComponent<ISaveProvider>();
+            if (saveProvider == null)
+            {
+                Debug.LogWarning("No ISaveProvider found on InventorySaveSystem GameObject. Please attach one (e.g. PlayerPrefsSaveProvider).");
+            }
+
             ItemData[] allItems = Resources.LoadAll<ItemData>("Items");
             itemDatabase = allItems.ToDictionary(item => item.ID, item => item);
         }
 
         public void SaveInventory()
         {
-            if (inventoryManager == null) return;
+            if (inventoryManager == null || saveProvider == null) return;
 
             InventorySaveData saveData = new InventorySaveData();
 
@@ -57,24 +63,26 @@ namespace ModularInventory.SaveSystem
             }
 
             string json = JsonUtility.ToJson(saveData);
-            PlayerPrefs.SetString(saveKey, json);
-            PlayerPrefs.Save();
+            saveProvider.Save(saveKey, json);
             
-            Debug.Log("Inventory Saved: " + json);
+            Debug.Log("Inventory Saved using " + saveProvider.GetType().Name);
         }
 
         public void LoadInventory()
         {
-            if (inventoryManager == null) return;
+            if (inventoryManager == null || saveProvider == null) return;
 
-            if (!PlayerPrefs.HasKey(saveKey))
+            if (!saveProvider.HasSave(saveKey))
             {
                 Debug.LogWarning("No save data found");
                 return;
             }
 
             inventoryManager.ClearInventory();
-            string json = PlayerPrefs.GetString(saveKey);
+            string json = saveProvider.Load(saveKey);
+            
+            if (string.IsNullOrEmpty(json)) return;
+
             InventorySaveData saveData = JsonUtility.FromJson<InventorySaveData>(json);
 
             foreach (var slotData in saveData.Slots)
@@ -82,7 +90,6 @@ namespace ModularInventory.SaveSystem
                 if (itemDatabase.TryGetValue(slotData.ItemID, out ItemData parsedData))
                 {
                     InventoryItem newItem = new InventoryItem(parsedData, slotData.StackAmount);
-                    // Force inject into the correct slot
                     var matchingSlot = inventoryManager.GetAllSlots().Find(s => s.SlotIndex == slotData.SlotIndex);
                     if (matchingSlot != null)
                     {
@@ -91,7 +98,7 @@ namespace ModularInventory.SaveSystem
                 }
             }
             
-            Debug.Log("Inventory Loaded.");
+            Debug.Log("Inventory Loaded via " + saveProvider.GetType().Name);
         }
     }
 }

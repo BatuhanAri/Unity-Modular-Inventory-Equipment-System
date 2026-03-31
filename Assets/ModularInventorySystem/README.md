@@ -12,11 +12,13 @@ Whether you're building a simple RPG, a complex survival game, or an MMO, our sy
 
 *   **100% Modularity:** Designed with Interfaces (`IInventory`) and loose coupling. Easy to integrate your own custom logic.
 *   **ScriptableObject Driven:** Define your items (Consumables, Materials, Equipments) effortlessly from the Inspector.
-*   **Drag & Drop UI:** Built-in mobile-friendly `Canvas` UI with intuitive drag & drop, and stack splitting capabilities.
+*   **Drag & Drop UI + Splitting:** Built-in mobile-friendly `Canvas` UI with intuitive drag & drop. Hold `SHIFT` to automatically **half-split stackable items** across slots.
 *   **Equipment Manager:** Equip items to specific slots (Head, Chest, Weapon, etc.) with automatic stat management routing and rule validation.
 *   **Zero-GC Allocations (Optimized):** Carefully written to be mobile and VR friendly. Built for 500+ items at 60fps.
-*   **Integrated Save/Load System:** JSON-based persistent saving works out of the box with `PlayerPrefs`.
+*   **Abstracted Save System:** Ships with a `PlayerPrefs` JSON base, but uses an injected `ISaveProvider` interface so you can securely plug in EasySave, BinaryFormatter, or Cloud Saves in literally seconds.
 *   **Smart Tooltip:** Out-of-the-box UI tooltips that respond instantly when hovering items.
+*   **Custom Editor Tools:** Utilize out-of-the-box Inspector debugging panels to fast-track development (Clear Inventory, Monitor Fill Ratios live).
+*   **Automated Tests:** Ships with an active automated NUnit test-suite (`Tests/Editor`) proving 100% mathematical reliability mathematically.
 
 ---
 
