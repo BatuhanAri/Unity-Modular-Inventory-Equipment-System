@@ -1,0 +1,38 @@
+{
+  "name": "batuhanari.inventorysystem",
+  "version": "1.0.0",
+  "displayName": "Modular Inventory & Equipment System",
+  "description": "A complete, modular, production-ready inventory management system for Unity with drag & drop UI, equipment system, and save/load functionality.",
+  "unity": "2022.3",
+  "unityModules": [
+    "ui",
+    "imgui",
+    "uielements",
+    "networking"
+  ],
+  "author": {
+    "name": "Batuhan Ari",
+    "email": "contact@batuhanari.com"
+  },
+  "license": "MIT",
+  "type": "tool",
+  "keywords": [
+    "inventory",
+    "equipment",
+    "ui",
+    "rpg",
+    "game",
+    "system",
+    "modular",
+    "drag-drop"
+  ],
+  "category": "Scripting",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BatuhanAri/inventory-system"
+  },
+  "bugs": {
+    "url": "https://github.com/BatuhanAri/inventory-system/issues"
+  },
+  "homepage": "https://github.com/BatuhanAri/inventory-system"
+}
