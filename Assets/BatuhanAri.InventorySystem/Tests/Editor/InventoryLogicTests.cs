@@ -12,6 +12,7 @@ namespace BatuhanAri.InventorySystem.Tests
         private InventoryManager inventoryManager;
         private ItemData mockConsumable;
         private ItemData mockEquipment;
+        private GameObject equipGo;
 
         [SetUp]
         public void Setup()
@@ -40,6 +41,7 @@ namespace BatuhanAri.InventorySystem.Tests
             Object.DestroyImmediate(inventoryManager.gameObject);
             Object.DestroyImmediate(mockConsumable);
             Object.DestroyImmediate(mockEquipment);
+            if (equipGo != null) Object.DestroyImmediate(equipGo);
         }
 
         [Test]
@@ -60,7 +62,9 @@ namespace BatuhanAri.InventorySystem.Tests
             Assert.AreEqual(7, inventoryManager.GetItemCount(mockConsumable));
 
             var slots = inventoryManager.GetAllSlots();
+            Assert.IsNotNull(slots[0].Item, "Slot 0'da item olmalı");
             Assert.AreEqual(5, slots[0].Item.CurrentStack);
+            Assert.IsNotNull(slots[1].Item, "Slot 1'de item olmalı");
             Assert.AreEqual(2, slots[1].Item.CurrentStack);
             Assert.IsTrue(slots[2].IsEmpty);
         }
@@ -88,7 +92,7 @@ namespace BatuhanAri.InventorySystem.Tests
         [Test]
         public void EquipItem_ValidItem_EquipsSuccessfully()
         {
-            var equipGo = new GameObject("EquipmentManager");
+            equipGo = new GameObject("EquipmentManager");
             var equipmentManager = equipGo.AddComponent<EquipmentManager>();
 
             inventoryManager.AddItem(mockEquipment, 1);
@@ -99,8 +103,6 @@ namespace BatuhanAri.InventorySystem.Tests
             Assert.IsTrue(result);
             Assert.AreEqual(0, inventoryManager.GetItemCount(mockEquipment)); // Removed from inventory
             Assert.AreEqual(mockEquipment, equipmentManager.GetSlot(EquipmentType.Weapon).CurrentItem.Data); // Inside equipment slot
-            
-            Object.DestroyImmediate(equipGo);
         }
     }
 }
