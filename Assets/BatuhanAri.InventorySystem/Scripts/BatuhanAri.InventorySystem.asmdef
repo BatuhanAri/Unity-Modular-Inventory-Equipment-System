@@ -3,7 +3,7 @@
     "rootNamespace": "BatuhanAri.InventorySystem",
     "references": [
         "Unity.TextMeshPro",
-        "UnityEngine.UI"
+        "Unity.ugui"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
